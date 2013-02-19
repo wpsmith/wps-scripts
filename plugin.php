@@ -45,8 +45,12 @@ class WP_Font_Awesome {
 	/**
      * Hooks plugin into all basic
      * 
+     * @todo Updater doesn't need to run on every admin page
      */
     public function plugins_loaded() {
+		
+		// Updater
+		add_action( 'admin_init', array( $this, 'updater' ) );
 		
 		// Register Styles
         add_action( 'init', array( $this, 'register_styles' ) );
@@ -60,6 +64,34 @@ class WP_Font_Awesome {
 		// Add shortcode to widgets
         add_filter( 'widget_text', 'do_shortcode' );
     }
+	
+	/**
+     * Updater
+     * 
+     */
+	function updater() {
+
+		include_once 'updater/updater.php';
+
+		define( 'WP_GITHUB_FORCE_UPDATE', true );
+		$plugin = 'wpsmith/WP-Font-Awesome';
+		$config = array(
+			'slug'               => plugin_basename( __FILE__ ),
+			'proper_folder_name' => 'WP-Font-Awesome',
+			'api_url'            => sprintf( 'https://api.github.com/repos/%s', $plugin ),
+			'raw_url'            => sprintf( 'https://raw.github.com/%s/master', $plugin ),
+			'github_url'         => sprintf( 'https://github.com/%s', $plugin ),
+			'zip_url'            => sprintf( 'https://github.com/%s/zipball/master', $plugin ),
+			'sslverify'          => true,
+			'requires'           => '3.0',
+			'tested'             => '3.3',
+			'readme'             => 'README.md',
+			'access_token'       => '',
+		);
+
+		$_wp_github_updater = new WP_GitHub_Updater( $config );
+
+	}
 	
      /**
       * Builds style suffix for font awesome CSS files based on WP_DEBUG or SCRIPT_DEBUG
