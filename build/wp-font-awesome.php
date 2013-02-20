@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name: WP Font Awesome
  * Plugin URI: https://wpsmith.net
