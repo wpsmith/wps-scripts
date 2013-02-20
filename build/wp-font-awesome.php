@@ -1,6 +1,7 @@
 <?php
 
 /**
+
  * Plugin Name: WP Font Awesome
  * Plugin URI: https://wpsmith.net
  * Description: Use the Font Awesome icon set within WordPress. Icons can be inserted using either HTML or a shortcode.
@@ -24,11 +25,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
+ 
  */
 
 
 /**
  * Font Awesome Class
+ * Version: 3.0.1
  *
  */
 class WP_Font_Awesome {
