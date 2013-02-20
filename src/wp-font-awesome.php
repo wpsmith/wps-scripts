@@ -57,8 +57,7 @@ class WP_Font_Awesome extends WPS_Scripts {
         add_filter( 'widget_text', 'do_shortcode' );
         
     }
-	
-	
+
 	/**
      * Updater
      * 
@@ -197,26 +196,28 @@ class WP_Font_Awesome extends WPS_Scripts {
     public function shortcode( $atts ) {
 		$this->enqueue_styles();
 		
-        shortcode_atts(
-			array(
-				'name' => 'icon-wrench',
-				'tag'  => 'i',
-			), 
-			$atts
+        extract(
+			shortcode_atts(
+				array(
+					'name' => 'icon-wrench',
+					'tag'  => 'i',
+				), 
+				$atts
+			)
 		);
 		
-        $icon = '<' . $atts['tag'] . ' class="' . $atts['name'] . '">&nbsp;</' . $atts['tag'] . '>';
+        if ( strpos( $name, 'icon' ) )
+			$icon = '<' . $tag . ' class="' . $name . '">&nbsp;</' . $tag . '>';
+		else
+			$icon = '<' . $tag . ' class="icon-' . $name . '">&nbsp;</' . $tag . '>';
 
         return $icon;
     }
 	
-	
-
 }
 
 /**
- * Font Awesome Class
- * Version: 3.0.0
+ * WP Smith Scripts Class
  *
  */
 class WPS_Scripts {
@@ -243,7 +244,7 @@ class WPS_Scripts {
      * Constructor Method
      * 
      */
-    protected function __construct() {
+    public function __construct() {
         add_action( 'plugins_loaded', array( &$this, 'plugins_loaded' ) );
     }
 	
