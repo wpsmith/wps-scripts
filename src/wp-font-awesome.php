@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name: WP Font Awesome
- * Plugin URI: https://wpsmith.net
+ * Plugin URI: http://wpsmith.net
  * Description: Use the Font Awesome icon set within WordPress. Icons can be inserted using either HTML or a shortcode.
  * Version: 3.0.1
  * Author: Travis Smith
@@ -65,7 +65,9 @@ class WP_Font_Awesome {
 		
 		// Add shortcode to widgets
         add_filter( 'widget_text', 'do_shortcode' );
+        
     }
+	
 	
 	/**
      * Updater
@@ -81,12 +83,13 @@ class WP_Font_Awesome {
 			'slug'               => plugin_basename( __FILE__ ),
 			'proper_folder_name' => 'WP-Font-Awesome',
 			'api_url'            => sprintf( 'https://api.github.com/repos/%s', $plugin ),
-			'raw_url'            => sprintf( 'https://raw.github.com/%s/master', $plugin ),
+			'raw_url'            => sprintf( 'https://raw.github.com/%s/master/build', $plugin ),
+			'readme_raw_url'     => sprintf( 'https://raw.github.com/%s/master', $plugin ),
 			'github_url'         => sprintf( 'https://github.com/%s', $plugin ),
 			'zip_url'            => sprintf( 'https://github.com/%s/blob/master/build/wp-font-awesome.zip?raw=true', $plugin ),
-			'sslverify'          => true,
+			'sslverify'          => false,
 			'requires'           => '3.0',
-			'tested'             => '3.5',
+			'tested'             => '3.5.2',
 			'readme'             => 'README.md',
 			'access_token'       => '',
 		);
