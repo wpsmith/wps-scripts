@@ -32,17 +32,7 @@
  * Version: 3.0.0
  *
  */
-class WP_Font_Awesome {
-
-	public $handles = array();
-	
-    /**
-     * Constructor Method
-     * 
-     */
-    public function __construct() {
-        add_action( 'plugins_loaded', array( &$this, 'plugins_loaded' ) );
-    }
+class WP_Font_Awesome extends WPS_Scripts {
 	
 	/**
      * Hooks plugin into all basic
@@ -98,18 +88,52 @@ class WP_Font_Awesome {
 
 	}
 	
-     /**
-      * Builds style suffix for font awesome CSS files based on WP_DEBUG or SCRIPT_DEBUG
+	/**
+      * Get all Font Awesome classes
       * 
-      * @param string $script Base name of file
+      * WP_Font_Awesome::get_font_classes()
       * 
-      * @return string $script Full file name
+	  * @uses get_font_classes_raw() Get raw list of Font Awesome classes
+      * @return array $icons Alpha sorted list of available Font Awesome classes
       */
-	private function suffix( $script ) {
-	
-		$script  = ( ( defined( 'WP_DEBUG' ) && WP_DEBUG ) || ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ) ? $script . '.css' : $script . '.min.css';
+	static function get_font_classes() {
+		$classes = WP_Font_Awesome::get_font_classes_raw();
+		foreach ( $classes as $key => $class )
+			$classes[ $class ] = 'icon-' . $class;
 
-		return $script;
+		return $classes;
+	}
+	
+	/**
+      * Get all Font Awesome classes as Names
+      * 
+      * WP_Font_Awesome::get_font_class_names()
+      * 
+      * @uses get_font_classes_raw() Get raw list of Font Awesome classes
+      * @return array $icons Alpha sorted list of available Font Awesome classes
+      */
+	static function get_font_class_names() {
+		$classes = WP_Font_Awesome::get_font_classes_raw();
+		foreach ( $classes as $key => $class )
+			 $classes[ $class ] = ucwords( str_replace( '-', ' ', $class ) );
+
+		return $classes;
+	}
+	
+	/**
+      * Get all Font Awesome classes raw
+      * 
+      * WP_Font_Awesome::get_font_classes_raw()
+      * 
+      * @return array $icons Alpha sorted list of available Font Awesome classes
+      */
+	static function get_font_classes_raw() {
+		$icons = array(
+		// Font Awesome 3.0 icons
+		'cloud-download', 'cload-upload', 'lightbulb', 'exchange', 'bell-alt', 'beer', 'coffee', 'food', 'fighter-jet', 'user-md', 'stethoscope', 'suitcase', 'building', 'hospital', 'ambulance', 'medkit', 'h-sign', 'plus-sign-alt', 'spinner', 'angle-left', 'angle-right', 'angle-up', 'angle-down', 'double-angle-left', 'double-angle-right', 'double-angle-up', 'double-angle-down', 'circle-blank', 'circle', 'desktop', 'laptop', 'tablet', 'mobile-phone', 'quote-left', 'quote-right', 'reply', 'github-alt', 'folder-close-alt', 'folder-open-alt', 
+		// Font Awesome 2.0 icons
+		'glass', 'music', 'search', 'envelope', 'heart', 'star', 'star-empty', 'user', 'film', 'th-large', 'th', 'th-list', 'ok', 'remove', 'zoom-in', 'zoom-out', 'off', 'signal', 'cog', 'trash', 'home', 'file', 'time', 'road', 'download-alt', 'download', 'upload', 'inbox', 'play-circle', 'repeat', 'refresh', 'list-alt', 'lock', 'flag', 'headphones', 'volume-off', 'volume-down', 'volume-up', 'qrcode', 'barcode', 'tags', 'book', 'bookmark', 'print', 'camera', 'font', 'bold', 'italic', 'text-height', 'text-width', 'align-left', 'align-center', 'align-right', 'align-justify', 'list', 'indent-left', 'indent-right', 'facetime-video', 'picture', 'pencil', 'map-marker', 'adjust', 'tint', 'edit', 'share', 'check', 'move', 'step-backward', 'fast-backward', 'backward', 'play', 'pause', 'stop', 'forward', 'fast-forward', 'step-forward', 'eject', 'chevron-left', 'chevron-right', 'plus-sign', 'minus-sign', 'remove-sign', 'ok-sign', 'question-sign', 'info-sign', 'screenshot', 'remove-circle', 'ok-circle', 'nam-circle', 'arrow-left', 'arrow-right', 'arrow-up', 'arrow-down', 'share-alt', 'resize-full', 'resize-small', 'plus', 'minus', 'asterisk', 'exclamation-sign', 'gift', 'leaf', 'fire', 'eye-open', 'eye-close', 'warning-sign', 'plane', 'calendar', 'random', 'comment', 'magnet', 'chevron-up', 'chevron-down', 'retweet', 'shopping-cart', 'folder-close', 'folder-open', 'resize-vertical', 'resize-horizontal', 'bar-chart', 'twitter-sign', 'facebook-sign', 'camera-retro', 'key', 'cogs', 'comments', 'thumbs-up', 'thumbs-down', 'star-half', 'heart-empty', 'signout', 'linkedin-sign', 'pushpin', 'external-link', 'signin', 'trophy', 'github-sign', 'upload-alt', 'lemon', );
+		return asort( $icons );
 	}
 	
 	/**
@@ -120,27 +144,35 @@ class WP_Font_Awesome {
     public function register_styles() {
         global $wp_styles;
 		
-		$args = apply_filters( 'wp_font_awesome_args', $this->get_args( 'font-awesome' ) );
-		wp_register_style( $args['handle'], $args['src'], $args['deps'], $args['ver'], $args['media'] );
+		$args = $this->get_args( 'font-awesome' );
+		if ( false !== $args && is_array( $args ) )
+			wp_register_style( $args['handle'], $args['src'], $args['deps'], $args['ver'], $args['media'] );
 		
-		$args = apply_filters( 'wp_font_awesome_ie7_args', $this->get_args( 'font-awesome-ie7' ) );
-		wp_register_style( $args['handle'], $args['src'], $args['deps'], $args['ver'], $args['media'] );
-        $wp_styles->add_data( $args['handle'], 'conditional', 'lte IE 7' );
+		$args = $this->get_args( 'font-awesome-ie7' );
+		if ( false !== $args && is_array( $args ) ) {
+			wp_register_style( $args['handle'], $args['src'], $args['deps'], $args['ver'], $args['media'] );
+			$wp_styles->add_data( $args['handle'], 'conditional', 'lte IE 7' );
+		}
     }
 	
 	/**
-     * Register Font Awesome
+     * Get Font Awesome Args
      * 
+	 * Filter: wp_font_awesome_args - must return array()
      */
 	private function get_args( $handle ) {
 		$this->handles[] = $handle;
 		
-		return array(
-			'handle' => $handle,
-			'src'    => plugins_url( 'lib/css/' . $this->suffix( $handle ), __FILE__  ),
-			'deps'   => array(),
-			'ver'    => '3.0',
-			'media'  => 'all',
+		return apply_filters(
+			'wp_font_awesome_args',
+			array(
+				'handle' => $handle,
+				'src'    => plugins_url( 'lib/css/' . $this->suffix( $handle ), __FILE__  ),
+				'deps'   => array(),
+				'ver'    => '3.0',
+				'media'  => 'all',
+			),
+			$handle
 		);
 	}
 	
@@ -152,7 +184,7 @@ class WP_Font_Awesome {
     public function enqueue_styles() {
 		global $post;
 		foreach( $this->handles as $handle ) {
-			if ( ! get_post_meta( $post->ID, 'wp_font_awesome_remove', true ) )
+			if ( ! get_post_meta( $post->ID, 'wp_font_awesome_remove', true ) && apply_filters( 'wp_font_awesome_enqueue', true, $post ) )
 				wp_enqueue_style( $handle );
 		}
 		
@@ -177,6 +209,68 @@ class WP_Font_Awesome {
 
         return $icon;
     }
+	
+	
+
+}
+
+/**
+ * Font Awesome Class
+ * Version: 3.0.0
+ *
+ */
+class WPS_Scripts {
+
+	/**
+	 * Holds a copy of the object for easy reference.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var object
+	 */
+	protected static $instance;
+	
+	/**
+	 * Holds a copy of the handles.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var array
+	 */
+	protected $handles = array();
+	
+    /**
+     * Constructor Method
+     * 
+     */
+    protected function __construct() {
+        add_action( 'plugins_loaded', array( &$this, 'plugins_loaded' ) );
+    }
+	
+	/**
+      * Builds style suffix for font awesome CSS files based on WP_DEBUG or SCRIPT_DEBUG
+      * 
+      * @param string $script Base name of file
+      * 
+      * @return string $script Full file name
+      */
+	public function suffix( $script ) {
+	
+		$script  = ( ( defined( 'WP_DEBUG' ) && WP_DEBUG ) || ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ) ? $script . '.css' : $script . '.min.css';
+
+		return $script;
+	}
+	
+	/**
+	 * Getter method for retrieving the object instance.
+	 *
+	 * @since 1.0.0
+	 */
+	public static function get_instance() {
+	
+		return self::$instance;
+	
+	}
 
 }
 
