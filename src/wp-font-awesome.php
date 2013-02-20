@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name: WP Font Awesome
  * Plugin URI: https://wpsmith.net
@@ -81,10 +82,10 @@ class WP_Font_Awesome {
 			'api_url'            => sprintf( 'https://api.github.com/repos/%s', $plugin ),
 			'raw_url'            => sprintf( 'https://raw.github.com/%s/master', $plugin ),
 			'github_url'         => sprintf( 'https://github.com/%s', $plugin ),
-			'zip_url'            => sprintf( 'https://github.com/%s/zipball/master', $plugin ),
+			'zip_url'            => sprintf( 'https://github.com/%s/blob/master/build/wp-font-awesome.zip?raw=true', $plugin ),
 			'sslverify'          => true,
 			'requires'           => '3.0',
-			'tested'             => '3.3',
+			'tested'             => '3.5',
 			'readme'             => 'README.md',
 			'access_token'       => '',
 		);
