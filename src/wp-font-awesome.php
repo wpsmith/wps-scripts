@@ -29,6 +29,7 @@
 
 /**
  * Font Awesome Class
+ * Version: 3.0.0
  *
  */
 class WP_Font_Awesome {
