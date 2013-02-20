@@ -1,10 +1,10 @@
-#Font Awesome Icons
+#WP Font Awesome
 
 Contributors: wpsmith
-Tags: icons, font-awesome, font icon, UI, icon font, bootstrap
+Tags: icons, font-awesome, font icon, UI, icon font, bootstrap, twitter bootstrap
 Requires at least: 3.0
 Tested up to: 3.5
-Stable tag: 3.0
+Stable tag: 3.0.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -52,8 +52,6 @@ Chevron left icon
 
 `[icon name=icon-chevron-left]`
 
-
-
 ##Installation
 
 1. Upload Font Awesome Icons to the `/wp-content/plugins/` directory.
@@ -66,17 +64,8 @@ The shortcode to use is `[icon name=name-of-icon]`, where name=X is the class of
 
 __Version 3.0__
 
-Updated font and CSS files to Font Awesome 3.0 release.
+Initial Build
 
-__Version 1.2__
-
-Added IE7 conditional stylesheet
-
-__Version 1.1__
-
-Created and enabled shortcode
-
-__Version 1.0__
 
 ##To Do
 
@@ -87,10 +76,12 @@ __Version 1.0__
 
 - [Travis Smith](http://wpsmith.net)
 
+
 ##Credits
 
  Font Awesome webfont and associated code are licensed under CC BY 3.0 and is a production of @fortaweso_me, by Dave Gandy.
 
+ 
 ##License
 License:
     Copyright (C) 2012  Travis Smith
@@ -107,3 +98,6 @@ License:
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+##Current Version
+~Current Version: 3.0.1~
