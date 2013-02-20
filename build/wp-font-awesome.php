@@ -1,12 +1,12 @@
 <?php
 
 /**
- Plugin Name: WP Font Awesome
- Plugin URI: https://wpsmith.net
- Description: Use the Font Awesome icon set within WordPress. Icons can be inserted using either HTML or a shortcode.
- Version: 3.0.1
- Author: Travis Smith
- Author URI: http://wpsmith.net
+ * Plugin Name: WP Font Awesome
+ * Plugin URI: https://wpsmith.net
+ * Description: Use the Font Awesome icon set within WordPress. Icons can be inserted using either HTML or a shortcode.
+ * Version: 3.0.1
+ * Author: Travis Smith
+ * Author URI: http://wpsmith.net
  *
  * License:
  * Copyright (C) 2012  Travis Smith
