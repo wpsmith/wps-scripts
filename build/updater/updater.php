@@ -218,7 +218,7 @@ class WP_GitHub_Updater {
 			$raw_response = wp_remote_get( $query, array( 'sslverify' => $this->config['sslverify'] ) );
 
 			if ( is_wp_error( $raw_response ) )
-				$version = false;
+				return $version = false;
 
 			preg_match( '#^\s*Version\:\s*(.*)$#im', $raw_response['body'], $matches );
 
@@ -228,13 +228,13 @@ class WP_GitHub_Updater {
 				$version = $matches[1];
 
 			// back compat for older readme version handling
-			$query = trailingslashit( $this->config['raw_url'] ) . $this->config['readme'];
+			$query = trailingslashit( $this->config['readme_raw_url'] ) . $this->config['readme'];
 			$query = add_query_arg( array( 'access_token' => $this->config['access_token'] ), $query );
 
 			$raw_response = wp_remote_get( $query, array( 'sslverify' => $this->config['sslverify'] ) );
 
 			if ( is_wp_error( $raw_response ) )
-				return $version;
+				return $version = false;
 
 			preg_match( '#^\s*`*~Current Version\:\s*([^~]*)~#im', $raw_response['body'], $__version );
 
