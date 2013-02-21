@@ -35,6 +35,24 @@
 class WP_Font_Awesome extends WPS_Scripts {
 	
 	/**
+	 * Determines whether to add Font Awesome More.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
+	public $type = '';
+	
+	/**
+     * Constructor Method
+     * 
+     */
+    public function __construct( $type = '' ) {
+		$this->$type = $type;
+        add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ) );
+    }
+	
+	/**
      * Hooks plugin into all basic
      * 
      * @todo Updater doesn't need to run on every admin page
@@ -138,7 +156,27 @@ class WP_Font_Awesome extends WPS_Scripts {
 	/**
      * Register Font Awesome
      * 
-     * Two filters: wp_font_awesome_args & wp_font_awesome_ie7_args
+     */
+    public function register_more_styles() {
+		global $wp_styles;
+		
+		foreach ( array( 'font-awesome-corp', 'font-awesome-ext', 'font-awesome-social', ) as $handle ) {
+			$args = $this->get_args( $handle, array( 'src' => plugins_url( 'lib/font-awesome-more/css/' . $handle . '.css' ), __FILE__  ) );
+			if ( false !== $args && is_array( $args ) )
+				wp_register_style( $args['handle'], $args['src'], $args['deps'], $args['ver'], $args['media'] );
+		}
+		
+		$args = $this->get_args( 'font-awesome-more-ie7' );
+		if ( false !== $args && is_array( $args ) ) {
+			wp_register_style( $args['handle'], $args['src'], $args['deps'], $args['ver'], $args['media'] );
+			$wp_styles->add_data( $args['handle'], 'conditional', 'lte IE 7' );
+		}
+		
+	}
+	
+	/**
+     * Register Font Awesome
+     * 
      */
     public function register_styles() {
         global $wp_styles;
@@ -159,20 +197,24 @@ class WP_Font_Awesome extends WPS_Scripts {
      * 
 	 * Filter: wp_font_awesome_args - must return array()
      */
-	private function get_args( $handle ) {
+	private function get_args( $handle, $args = array() ) {
 		$this->handles[] = $handle;
 		
-		return apply_filters(
-			'wp_font_awesome_args',
+		$defaults = apply_filters(
+			'wp_font_awesome_default_args',
 			array(
 				'handle' => $handle,
-				'src'    => plugins_url( 'lib/css/' . $this->suffix( $handle ), __FILE__  ),
+				'src'    => plugins_url( 'lib/font-awesome/css/' . $this->suffix( $handle ), __FILE__  ),
 				'deps'   => array(),
 				'ver'    => '3.0',
 				'media'  => 'all',
 			),
 			$handle
 		);
+		
+		$args = wp_parse_args( $args, $defaults );
+		
+		return apply_filters( 'wp_font_awesome_args', $args, $handle );
 	}
 	
 	/**
