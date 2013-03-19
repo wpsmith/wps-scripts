@@ -138,10 +138,10 @@ class WPSS_Font_Awesome extends WPS_Scripts {
 	 * Filter: wp_font_awesome_args - must return array()
      */
 	protected function get_args( $handle, $args = array() ) {
-		$this->handles[] = $handle;
+		$this->css_handles[] = $handle;
 		
 		$defaults = apply_filters(
-			'wpss_' . str_replace( '-', '_', $this->library ) . '_default_args',
+			'wpss_' . $this->_lib_name() . '_default_args',
 			array(
 				'handle' => $handle,
 				'src'    => plugins_url( 'lib/' . $this->library . '/css/' . $this->suffix_css( $handle ), WPSS_PLUGIN_DIR ),
@@ -154,7 +154,7 @@ class WPSS_Font_Awesome extends WPS_Scripts {
 		
 		$args = wp_parse_args( $args, $defaults );
 		
-		return apply_filters( 'wpss_' . str_replace( '-', '_', $this->library ) . '_args', $args, $handle );
+		return apply_filters( 'wpss_' . $this->_lib_name() . '_args', $args, $handle );
 	}
 	
 	/**
@@ -164,8 +164,8 @@ class WPSS_Font_Awesome extends WPS_Scripts {
      */
     public function enqueue_scripts() {
 		global $post;
-		foreach( $this->handles as $handle ) {
-			if ( ! get_post_meta( $post->ID, 'wp_font_awesome_remove', true ) && apply_filters( 'wp_font_awesome_' . str_replace( 'font-awesome-', '', $handle ) . '_enqueue', true, $post ) )
+		foreach( $this->css_handles as $handle ) {
+			if ( ! get_post_meta( $post->ID, 'wp_font_awesome_remove', true ) && apply_filters( 'wpss_font_awesome_' . str_replace( 'font-awesome-', '', $handle ) . '_enqueue', true, $post ) )
 				wp_enqueue_style( $handle );
 		}
 		
@@ -179,7 +179,7 @@ class WPSS_Font_Awesome extends WPS_Scripts {
 		$this->enqueue_scripts();
 		
 		$args = apply_filters(
-			'wpss_' . str_replace( '-', '_', $this->library ) . '_sc_default_args',
+			'wpss_' . $this->_lib_name() . '_sc_default_args',
 			array(
 				'name'  => 'icon-wrench',
 				'tag'   => 'i',
