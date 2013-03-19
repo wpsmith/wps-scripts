@@ -1,8 +1,8 @@
-=== Font Awesome Icons ===
-Contributors: rachelbaker
-Tags: icons, font-awesome, font icon, UI, icon font, bootstrap
+=== WPS Scripts ===
+Contributors: wpsmith
+Tags: icons, font-awesome, font icon, UI, icon font, bootstrap, prettyphoto
 Requires at least: 3.0
-Tested up to: 3.4.2
+Tested up to: 3.5.1
 Stable tag: 1.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
