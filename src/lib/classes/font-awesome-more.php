@@ -81,7 +81,7 @@ class WPSS_Font_Awesome_More extends WPSS_Font_Awesome {
 		
 		$all = array();
 		foreach ( array( 'social' => $social, 'corp' => $corp, 'ext' => $ext, 'default' => $icons, ) as $key => $set ) {
-			if ( apply_filters( 'wp_font_awesome_more_' . $key, true ) )
+			if ( apply_filters( 'wpss_font_awesome_more_' . $key, true ) )
 				$all = array_merge( $all, $set );
 		}
 		
@@ -95,7 +95,7 @@ class WPSS_Font_Awesome_More extends WPSS_Font_Awesome {
     public function register_more_scripts() {
 		$this->suppress_suffix = true;
 		foreach ( array( 'corp', 'ext', 'social', ) as $handle ) {
-			if ( apply_filters( 'wp_font_awesome_more_' . $handle, true ) ) {
+			if ( apply_filters( 'wpss_font_awesome_more_' . $handle, true ) ) {
 				$args = $this->get_args( 'font-awesome-' . $handle );
 				if ( false !== $args && is_array( $args ) )
 					wp_register_style( $args['handle'], $args['src'], $args['deps'], $args['ver'], $args['media'] );
@@ -103,7 +103,7 @@ class WPSS_Font_Awesome_More extends WPSS_Font_Awesome {
 		}
 		$this->suppress_suffix = false;
 		
-		if ( apply_filters( 'wp_font_awesome_more_ie7', true ) ) {
+		if ( apply_filters( 'wpss_font_awesome_more_ie7', true ) ) {
 			$args = $this->get_args( $this->library . '-ie7' );
 			if ( false !== $args && is_array( $args ) )
 				$this->register_conditional_style( $args, 'lte IE 7' );
@@ -117,12 +117,12 @@ class WPSS_Font_Awesome_More extends WPSS_Font_Awesome {
      */
     public function enqueue_scripts() {
 		global $post;
-		
-		foreach( $this->handles as $handle ) {
+
+		foreach( $this->css_handles as $handle ) {
 			if ( 
 				! get_post_meta( $post->ID, 'wp_font_awesome_more_remove', true ) && 
-				apply_filters( 'wp_font_awesome_more_enqueue', true, $post ) &&
-				apply_filters( 'wp_font_awesome_more_' . str_replace( 'font-awesome-more-', '', $handle ), true, $post )
+				apply_filters( 'wpss_font_awesome_more_enqueue', true, $post ) &&
+				apply_filters( 'wpss_font_awesome_more_' . str_replace( 'font-awesome-more-', '', $handle ), true, $post )
 			)
 				wp_enqueue_style( $handle );
 		}
