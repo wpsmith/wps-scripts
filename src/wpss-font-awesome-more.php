@@ -26,19 +26,20 @@
  *
  */
 
+require_once( 'lib/classes/wps-scripts.php' );
 define( 'WPSS_PLUGIN_NAME', 'WPS Scripts - Font Awesome More for WordPress' );
 define( 'WPSS_PLUGIN_DIR', __FILE__ );
-register_activation_hook( __FILE__, 'wpssfam_activation' );
-function wpssfam_activation( $network_wide ) {
+register_activation_hook( __FILE__, 'wpss_fam_activation' );
+function wpss_fam_activation( $network_wide ) {
 	if ( ! class_exists( 'WPS_Scripts' ) ) {
 		if ( ! function_exists( 'deactivate_plugins' ) ) require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 		deactivate_plugins( plugin_basename( __FILE__ ) ); /** Deactivate ourself */
 		//wp_die( 'You can\'t do this! WPSS_PLUGIN_NAME: ' . WPSS_PLUGIN_NAME . '<br /> plugin_basename( __FILE__ ): ' . plugin_basename( __FILE__ ) );
-		add_action( 'admin_notices', 'wpssfam_deactivation_message', 5 );
+		add_action( 'admin_notices', 'wpss_fam_deactivation_message', 5 );
 	}
 }
 
-function wpssfam_deactivation_message() {
+function wpss_fam_deactivation_message() {
 	printf(
 		'<div id="wpssfam-message" class="error"><p>%s<strong>%s</strong>%s</p></div><style type="text/css">#message { display: none; }</style>',
 		__( 'Sorry, you can\'t activate ', 'wps-scripts' ),
