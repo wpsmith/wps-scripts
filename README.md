@@ -1,10 +1,9 @@
-#WP Font Awesome
+#WPS Scripts
 
 Contributors: wpsmith
-Tags: icons, font-awesome, font icon, UI, icon font, bootstrap, twitter bootstrap
+Tags: font-awesome, font-awesome-more, font icon, UI, icon font, bootstrap, twitter bootstrap, prettyphoto
 Requires at least: 3.0
-Tested up to: 3.5
-Stable tag: 3.0.1
+Tested up to: 3.5.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -12,59 +11,20 @@ Enables easy use of the Font Awesome icon font set from within WordPress.  Icons
 Font Awesome is a pictographic font set of 249 icons.  The icons are infinitely scalable and screen reader compatible.
 A full list of the 249 Font Awesome icons is available: [http://fortawesome.github.com/Font-Awesome/#all-icons](http://fortawesome.github.com/Font-Awesome/#all-icons)
 
-##Usage Instructions
+##Font Awesome
 
-To use any of the Font Awesome icons on your WordPress site you have two options:
+##Font Awesome More
 
-__HTML Option__
-
-All code examples on the Font Awesome site apply: [http://fortawesome.github.com/Font-Awesome/#code](http://fortawesome.github.com/Font-Awesome/#code)
-
-**Examples**
-
-Pencil icon
-
-`<i class="icon-pencil"></i>`
-
-Phone icon
-
-`<i class="icon-phone"></i>`
-
-Chevron left icon
-
-`<i class="icon-chevron-left"></i>`
-
-__Shortcode Option__
-
-Don't want to worry about HTML tags?  You can use a shortcode in your posts, pages and even widgets to display a Font Awesome icon.
-
-The shortcode to use is `[icon name=name-of-icon]`, where name=X is the class of the icon you would like to use.
-
-Pencil icon
-
-`[icon name=icon-pencil]`
-
-Phone icon
-
-`[icon name=icon-phone]`
-
-Chevron left icon
-
-`[icon name=icon-chevron-left]`
+##PrettyPhoto
 
 ##Installation
 
-1. Upload Font Awesome Icons to the `/wp-content/plugins/` directory.
+1. Upload WPS Scripts `src` folder to the `/wp-content/plugins/wps-scripts/` directory.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
-3. Add shortcode to your posts, pages and even widgets to display a Font Awesome icon.
-
-The shortcode to use is `[icon name=name-of-icon]`, where name=X is the class of the icon you would like to use.
 
 ##Release Notes
 
-__Version 3.0__
-
-Initial Build
+Initial Building
 
 
 ##To Do
@@ -79,7 +39,9 @@ Initial Build
 
 ##Credits
 
- Font Awesome webfont and associated code are licensed under CC BY 3.0 and is a production of @fortaweso_me, by Dave Gandy.
+Font Awesome webfont and associated code are licensed under CC BY 3.0 and is a production of @fortaweso_me, by Dave Gandy.
+PrettyPhoto code by Stephane Caron (@scaron) and licensed under Creative Commons 2.5 or GPLV2 license.
+
 
  
 ##License
@@ -100,4 +62,4 @@ License:
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ##Current Version
-~Current Version: 3.0.1~
+~Current Version: 1.0.0~
