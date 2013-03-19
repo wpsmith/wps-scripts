@@ -28,25 +28,27 @@ class WPSS_Font_Awesome_More extends WPSS_Font_Awesome {
 	 */
 	public $plugin_name = 'WPS Scripts - Font Awesome More for WordPress';
 	
-	public function plugins_loaded() {
-		
-		// Updater
-		//add_action( 'admin_init', array( $this, 'updater' ) );
-		
-		// Register Styles
-        add_action( 'init', array( $this, 'register_more_styles' ) );
-        
-		// Enqueue Styles
-        add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
-		
-		// Add Shortcodes
-		add_shortcode( 'icon', array( $this, 'shortcode' ) );
-		
-		// Add shortcode to widgets
-        add_filter( 'widget_text', 'do_shortcode' );
-        
+	/**
+     * Constructor Method
+     * 
+     */
+    public function __construct() {
+        parent::__construct();
+		add_action( 'plugins_loaded', array( $this, 'loaded' ) );
     }
 	
+	/**
+     * Hooks plugin into all basic
+     * 
+     * @todo Updater doesn't need to run on every admin page
+     */
+    public function loaded() {
+		
+		// Register Styles
+        add_action( 'init', array( $this, 'register_more_scripts' ) );
+		
+    }
+
 	/**
       * Get all Font Awesome classes raw
       * 
@@ -90,11 +92,7 @@ class WPSS_Font_Awesome_More extends WPSS_Font_Awesome {
      * Register Font Awesome More
      * 
      */
-    public function register_more_styles() {
-		global $wp_styles;
-		
-		$this->register_styles();
-		
+    public function register_more_scripts() {
 		$this->suppress_suffix = true;
 		foreach ( array( 'corp', 'ext', 'social', ) as $handle ) {
 			if ( apply_filters( 'wp_font_awesome_more_' . $handle, true ) ) {
@@ -107,12 +105,9 @@ class WPSS_Font_Awesome_More extends WPSS_Font_Awesome {
 		
 		if ( apply_filters( 'wp_font_awesome_more_ie7', true ) ) {
 			$args = $this->get_args( $this->library . '-ie7' );
-			if ( false !== $args && is_array( $args ) ) {
-				wp_register_style( $args['handle'], $args['src'], $args['deps'], $args['ver'], $args['media'] );
-				$wp_styles->add_data( $args['handle'], 'conditional', 'lte IE 7' );
-			}
+			if ( false !== $args && is_array( $args ) )
+				$this->register_conditional_style( $args, 'lte IE 7' );
 		}
-		
 	}
 	
 	/**
@@ -120,7 +115,7 @@ class WPSS_Font_Awesome_More extends WPSS_Font_Awesome {
      * 
      * Style can be prevented via wp_font_awesome_more_remove custom field.
      */
-    public function enqueue_styles() {
+    public function enqueue_scripts() {
 		global $post;
 		
 		foreach( $this->handles as $handle ) {
