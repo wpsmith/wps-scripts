@@ -57,7 +57,25 @@ abstract class WPS_Scripts {
      * 
      */
     public function __construct() {
-        add_action( 'plugins_loaded', array( &$this, 'plugins_loaded' ) );
+        add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ) );
+    }
+	
+	/**
+     * Hooks plugin into all basic
+     * 
+     * @todo Updater doesn't need to run on every admin page
+     */
+    public function plugins_loaded() {
+		
+		// Updater
+		//add_action( 'admin_init', array( $this, 'updater' ) );
+		
+		// Register Styles
+        add_action( 'init', array( $this, 'register_scripts' ) );
+        
+		// Enqueue Styles
+        add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		
     }
 	
 	/**
@@ -118,6 +136,30 @@ abstract class WPS_Scripts {
 	}
 	
 	/**
+     * Register Conditional Style
+     * 
+     * @param array  $args      Array of args for wp_register_style().
+	 * @param string $condition Condition for style output.
+     */
+    public function register_conditional_style( $args, $condition ) {
+        global $wp_styles;
+		
+		$defaults = array(
+			'handle' => '',
+			'src'    => false,
+			'deps'   => array(),
+			'ver'    => false,
+			'media'  => false,
+		);
+		$args = wp_parse_args( $args, $defaults );
+		
+		if ( is_array( $args ) ) {
+			wp_register_style( $args['handle'], $args['src'], $args['deps'], $args['ver'], $args['media'] );
+			$wp_styles->add_data( $args['handle'], 'conditional', $condition );
+		}
+    }
+	
+	/**
 	 * Getter method for retrieving the object instance.
 	 *
 	 * @since 0.0.1
@@ -127,6 +169,29 @@ abstract class WPS_Scripts {
 		return self::$instance;
 	
 	}
-
+	
+	/**
+     * Enqueue Styles
+     * 
+	 * This method must be re-defined in the extended class, to output the main
+	 * admin page content.
+     */
+	abstract public function register_scripts();
+	
+	/**
+     * Enqueue Styles
+     * 
+	 * This method must be re-defined in the extended class, to output the main
+	 * admin page content.
+     */
+	abstract public function enqueue_scripts();
+	
+	/**
+     * Enqueue Script
+     * 
+	 * This method must be re-defined in the extended class, to output the main
+	 * admin page content.
+     */
+	abstract protected function activation();
 }
 }
