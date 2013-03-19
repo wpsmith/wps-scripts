@@ -26,21 +26,22 @@ class WPSS_Font_Awesome extends WPS_Scripts {
 	 */
 	public $plugin_name = 'WPS Scripts - Font Awesome for WordPress';
 	
+	
+	/**
+     * Constructor Method
+     * 
+     */
+    public function __construct() {
+        parent::__construct();
+		add_action( 'plugins_loaded', array( $this, 'loaded' ) );
+    }
+	
 	/**
      * Hooks plugin into all basic
      * 
      * @todo Updater doesn't need to run on every admin page
      */
-    public function plugins_loaded() {
-		
-		// Updater
-		//add_action( 'admin_init', array( $this, 'updater' ) );
-		
-		// Register Styles
-        add_action( 'init', array( $this, 'register_styles' ) );
-        
-		// Enqueue Styles
-        add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
+    public function loaded() {
 		
 		// Add Shortcodes
 		add_shortcode( 'icon', array( $this, 'shortcode' ) );
@@ -121,18 +122,14 @@ class WPSS_Font_Awesome extends WPS_Scripts {
      * Register Font Awesome
      * 
      */
-    public function register_styles() {
-        global $wp_styles;
-		
+    public function register_scripts() {
 		$args = $this->get_args( 'font-awesome' );
 		if ( false !== $args && is_array( $args ) )
 			wp_register_style( $args['handle'], $args['src'], $args['deps'], $args['ver'], $args['media'] );
 		
 		$args = $this->get_args( 'font-awesome-ie7' );
-		if ( false !== $args && is_array( $args ) ) {
-			wp_register_style( $args['handle'], $args['src'], $args['deps'], $args['ver'], $args['media'] );
-			$wp_styles->add_data( $args['handle'], 'conditional', 'lte IE 7' );
-		}
+		if ( false !== $args && is_array( $args ) )
+			$this->register_conditional_style( $args, 'lte IE 7' );
     }
 	
 	/**
@@ -144,7 +141,7 @@ class WPSS_Font_Awesome extends WPS_Scripts {
 		$this->handles[] = $handle;
 		
 		$defaults = apply_filters(
-			'wps_' . str_replace( '-', '_', $this->library ) . '_default_args',
+			'wpss_' . str_replace( '-', '_', $this->library ) . '_default_args',
 			array(
 				'handle' => $handle,
 				'src'    => plugins_url( 'lib/' . $this->library . '/css/' . $this->suffix_css( $handle ), WPSS_PLUGIN_DIR ),
@@ -157,7 +154,7 @@ class WPSS_Font_Awesome extends WPS_Scripts {
 		
 		$args = wp_parse_args( $args, $defaults );
 		
-		return apply_filters( 'wps_' . str_replace( '-', '_', $this->library ) . '_args', $args, $handle );
+		return apply_filters( 'wpss_' . str_replace( '-', '_', $this->library ) . '_args', $args, $handle );
 	}
 	
 	/**
@@ -165,7 +162,7 @@ class WPSS_Font_Awesome extends WPS_Scripts {
      * 
      * Style can be prevented via wp_font_awesome_remove custom field.
      */
-    public function enqueue_styles() {
+    public function enqueue_scripts() {
 		global $post;
 		foreach( $this->handles as $handle ) {
 			if ( ! get_post_meta( $post->ID, 'wp_font_awesome_remove', true ) && apply_filters( 'wp_font_awesome_' . str_replace( 'font-awesome-', '', $handle ) . '_enqueue', true, $post ) )
@@ -179,23 +176,56 @@ class WPSS_Font_Awesome extends WPS_Scripts {
      * Use: [icon name="icon-pencil"]
      */
     public function shortcode( $atts ) {
-		$this->enqueue_styles();
+		$this->enqueue_scripts();
 		
 		$args = apply_filters(
-			'wps_' . str_replace( '-', '_', $this->library ) . '_sc_args',
+			'wpss_' . str_replace( '-', '_', $this->library ) . '_sc_default_args',
 			array(
-				'name' => 'icon-wrench',
-				'tag'  => 'i',
+				'name'  => 'icon-wrench',
+				'tag'   => 'i',
+				'style' => '',
+				'size'  => '',
 			)
 		);
 		
+		// Try to be dummy proof
+		// use 'icon' instead of 'name'
+		if ( isset( $atts['icon'] ) )
+			$atts['name'] = $atts['icon'];
+		
+		// use nothing, assume they wanted the icon with that name
+		if ( ! isset( $atts['name'] ) && ! isset( $atts['icon'] ) && ! isset( $atts['tag'] ) && isset( $atts[0] ) )
+			$atts['name'] = $atts[0];
+		
+		// use nothing, assume they wanted the size set
+		if ( ! isset( $atts['size'] ) && ! isset( $atts['style'] ) && isset( $atts[1] ) )
+			$atts['size'] = $atts[1];
+		
         extract( shortcode_atts( $args, $atts ) );
 		
+		// Start Pattern
+		$pattern = '<%1$s class="%2$s"';
+		
+		// Get class
         if ( preg_match( '/^icon/', $name ) )
-			$icon = '<' . $tag . ' class="' . $name . '">&nbsp;</' . $tag . '>';
+			$class = $name;
 		else
-			$icon = '<' . $tag . ' class="icon-' . $name . '">&nbsp;</' . $tag . '>';
-
+			$class = 'icon-' . $name;
+		
+		// Add style, assume size is pixels
+		if ( '' != $size && '' == $style )
+			$style = 'font-size: ' . $size . 'px;';
+		
+		// Close Pattern
+		if ( '' != $style ) {
+			$pattern .= ' style="%3$s">&nbsp;</%1$s>';
+			$icon = sprintf( $pattern, $tag, $class, $style );
+		}
+		else {
+			$pattern .= '>&nbsp;</%1$s>';
+			$icon = sprintf( $pattern, $tag, $class );
+		}
+		
         return $icon;
     }
 	
