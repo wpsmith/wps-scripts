@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Plugin Name: WPS Scripts - Font Awesome More for WordPress
+ * Plugin Name: WPS Scripts - Name for WordPress
  * Plugin URI: http://wpsmith.net
- * Description: Use the Font Awesome icon set within WordPress. Icons can be inserted using either HTML or a shortcode.
+ * Description: Use the Name script within WordPress.
  * Version: 3.0.1
  * Author: Travis Smith
  * Author URI: http://wpsmith.net
@@ -27,7 +27,7 @@
  */
 
 require_once( 'lib/classes/wps-scripts.php' );
-define( 'WPSS_PLUGIN_NAME', 'WPS Scripts - Font Awesome More for WordPress' );
+define( 'WPSS_PLUGIN_NAME', 'WPS Scripts - Name for WordPress' );
 define( 'WPSS_PLUGIN_DIR', __FILE__ );
 register_activation_hook( __FILE__, 'wpss_slug_activation' );
 function wpss_slug_activation( $network_wide ) {

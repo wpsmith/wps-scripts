@@ -80,11 +80,18 @@ class WPSS_Name extends WPS_Scripts {
      * Get Name Args
      * 
      */
-	protected function get_args( $handle, $args = array() ) {
-		$this->handles[] = $handle;
+	protected function get_args( $handle, $type = 'css', $args = array() ) {
+	
+		if ( 'css' == $type ) {
+			$file = '';
+			$this->css_handles[] = $handle;
+		} else {
+			$file = 'jquery.';
+			$this->js_handles[] = $handle;
+		}
 		
 		$defaults = apply_filters(
-			'wpss_' . str_replace( '-', '_', $this->library ) . '_default_args',
+			'wpss_' . $this->_lib_name() . '_default_args',
 			array(
 				'handle' => $handle,
 				'src'    => plugins_url( 'lib/' . $this->library . '/css/' . $this->suffix_css( $handle ), WPSS_PLUGIN_DIR ),
@@ -97,7 +104,7 @@ class WPSS_Name extends WPS_Scripts {
 		
 		$args = wp_parse_args( $args, $defaults );
 		
-		return apply_filters( 'wpss_' . str_replace( '-', '_', $this->library ) . '_args', $args, $handle );
+		return apply_filters( 'wpss_' . $this->_lib_name() . '_args', $args, $handle );
 	}
 	
 	/**
