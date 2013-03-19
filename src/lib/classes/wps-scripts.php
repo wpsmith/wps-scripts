@@ -50,7 +50,16 @@ abstract class WPS_Scripts {
 	 *
 	 * @var array
 	 */
-	protected $handles = array();
+	protected $css_handles = array();
+	
+	/**
+	 * Holds a copy of the handles.
+	 *
+	 * @since 0.0.1
+	 *
+	 * @var array
+	 */
+	protected $js_handles = array();
 	
     /**
      * Constructor Method
@@ -133,6 +142,15 @@ abstract class WPS_Scripts {
 		$script  = ( ( defined( 'WP_DEBUG' ) && WP_DEBUG ) || ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) || ( $this->suffix_suppres ) ) ? $script . '.js' : $script . '.min.js';
 
 		return $script;
+	}
+	
+	/**
+      * Returns name of library with underscores.
+      * 
+      * @return string Name of library with underscores.
+      */
+	protected function _lib_name() {
+		return $this->_lib_name();
 	}
 	
 	/**
