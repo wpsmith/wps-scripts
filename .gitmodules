@@ -1,9 +1,0 @@
-[submodule "src/lib/font-awesome"]
-	path = src/lib/font-awesome
-	url = https://github.com/FortAwesome/Font-Awesome.git
-[submodule "src/lib/font-awesome-more"]
-	path = src/lib/font-awesome-more
-	url = https://github.com/gregoryloucas/Font-Awesome-More.git
-[submodule "src/lib/prettyphoto"]
-	path = src/lib/prettyphoto
-	url = https://github.com/scaron/prettyphoto.git
