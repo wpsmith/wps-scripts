@@ -165,7 +165,7 @@ class WPSS_Font_Awesome extends WPS_Scripts {
     public function enqueue_scripts() {
 		global $post;
 		foreach( $this->css_handles as $handle ) {
-			if ( ! get_post_meta( $post->ID, 'wp_font_awesome_remove', true ) && apply_filters( 'wpss_font_awesome_' . str_replace( 'font-awesome-', '', $handle ) . '_enqueue', true, $post ) )
+			if ( ! get_post_meta( $post->ID, 'wp_font_awesome_remove', true ) && apply_filters( 'wpss_font_awesome_' . str_replace( '-', '_', str_replace( 'font-awesome-', '', $handle ) ) . '_enqueue', true, $post ) )
 				wp_enqueue_style( $handle );
 		}
 		

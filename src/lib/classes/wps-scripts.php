@@ -150,7 +150,7 @@ abstract class WPS_Scripts {
       * @return string Name of library with underscores.
       */
 	protected function _lib_name() {
-		return $this->_lib_name();
+		return $this->library;
 	}
 	
 	/**

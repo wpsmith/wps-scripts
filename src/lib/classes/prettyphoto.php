@@ -35,6 +35,12 @@ class WPSS_PrettyPhoto extends WPS_Scripts {
      */
     public function __construct() {
         parent::__construct();
+		add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ) );
+			// Register Styles
+			//add_action( 'init', array( $this, 'register_scripts' ) );
+			
+			// Enqueue Styles
+			//add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_action( 'plugins_loaded', array( $this, 'loaded' ) );
     }
 	
@@ -58,11 +64,6 @@ class WPSS_PrettyPhoto extends WPS_Scripts {
 	 *								false if WPMU is disabled or plugin is activated on an individual blog
 	 */
 	protected function activation() {
-		if ( ! class_exists( 'WPS_Scripts' ) ) {
-			if ( ! function_exists( 'deactivate_plugins' ) ) require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-			deactivate_plugins( plugin_basename( __FILE__ ) ); /** Deactivate ourself */
-			//add_action( 'admin_notices', array( $this, 'deactivation_message' ), 5 );
-		}
 		
 	}
 	
@@ -71,7 +72,7 @@ class WPSS_PrettyPhoto extends WPS_Scripts {
      * 
      */
     public function register_scripts() {
-	
+		
 		$args = $this->get_args( 'wpss-prettyphoto', 'css' );
 		if ( false !== $args && is_array( $args ) )
 			wp_register_style( $args['handle'], $args['src'], $args['deps'], $args['ver'], $args['media'] );
@@ -79,7 +80,7 @@ class WPSS_PrettyPhoto extends WPS_Scripts {
 		$args = $this->get_args( 'wpss-prettyphoto', 'js' );
 		if ( false !== $args && is_array( $args ) )
 			wp_register_script( $args['handle'], $args['src'], $args['deps'], $args['ver'], $args['media'] );
-					
+		
     }
 	
 	/**
@@ -109,7 +110,7 @@ class WPSS_PrettyPhoto extends WPS_Scripts {
 			$handle
 		);
 		
-		$args = wp_parse_args( $args, $defaults );
+		$args = wp_parse_args( $args, $defaults );			
 		
 		return apply_filters( 'wpss_' . $this->_lib_name() . '_args', $args, $handle );
 	}
@@ -123,12 +124,12 @@ class WPSS_PrettyPhoto extends WPS_Scripts {
 		global $post;
 		
 		foreach( $this->css_handles as $handle ) {
-			if ( ! get_post_meta( $post->ID, 'wp_prettyphoto_remove', true ) && apply_filters( 'wp_prettyphoto_enqueue', true, $post ) )
+			if ( ! get_post_meta( $post->ID, 'wpss_prettyphoto_remove', true ) && apply_filters( 'wpss_prettyphoto_enqueue', true, $post ) )
 				wp_enqueue_style( $handle );
 		}
 		
 		foreach( $this->js_handles as $handle ) {
-			if ( ! get_post_meta( $post->ID, 'wp_prettyphoto_remove', true ) && apply_filters( 'wp_prettyphoto_enqueue', true, $post ) )
+			if ( ! get_post_meta( $post->ID, 'wpss_prettyphoto_remove', true ) && apply_filters( 'wpss_prettyphoto_enqueue', true, $post ) )
 				wp_enqueue_script( $handle );
 		}
 		
@@ -144,10 +145,11 @@ class WPSS_PrettyPhoto extends WPS_Scripts {
 		$pre = apply_filters( 'wpss_init_prettyphoto', false );
 		if ( $pre ) return;
 		
+		// Dynamic Selector
 		$selector = apply_filters( 'wpss_selector_prettyphoto', "a[rel^='prettyPhoto']" );
 	?>
 <script type="text/javascript" charset="utf-8">
-  $(document).ready(function(){
+  jQuery(document).ready(function($){
     $("<?php echo $selector; ?>").prettyPhoto();
   });
 </script>

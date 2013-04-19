@@ -120,9 +120,9 @@ class WPSS_Font_Awesome_More extends WPSS_Font_Awesome {
 
 		foreach( $this->css_handles as $handle ) {
 			if ( 
-				! get_post_meta( $post->ID, 'wp_font_awesome_more_remove', true ) && 
+				! get_post_meta( $post->ID, 'wpss_font_awesome_more_remove', true ) && 
 				apply_filters( 'wpss_font_awesome_more_enqueue', true, $post ) &&
-				apply_filters( 'wpss_font_awesome_more_' . str_replace( 'font-awesome-more-', '', $handle ), true, $post )
+				apply_filters( 'wpss_font_awesome_more_' . str_replace( '-', '_', str_replace( 'font-awesome-more-', '', $handle ) ), true, $post )
 			)
 				wp_enqueue_style( $handle );
 		}
